@@ -31,7 +31,8 @@ static const char* currfuncname(lua_State* L)
         return debugname;
 }
 
-l_noret luaL_argerrorL(lua_State* L, int narg, const char* extramsg)
+// jesse: love expects this to return an int
+int luaL_argerrorL(lua_State* L, int narg, const char* extramsg)
 {
     const char* fname = currfuncname(L);
 
@@ -78,7 +79,7 @@ void luaL_where(lua_State* L, int level)
     lua_pushliteral(L, ""); // else, no information available...
 }
 
-l_noret luaL_errorL(lua_State* L, const char* fmt, ...)
+int luaL_errorL(lua_State* L, const char* fmt, ...)
 {
     va_list argp;
     va_start(argp, fmt);
@@ -87,6 +88,9 @@ l_noret luaL_errorL(lua_State* L, const char* fmt, ...)
     va_end(argp);
     lua_concat(L, 2);
     lua_error(L);
+
+    // jesse: love expects this to return an int
+    return 1;
 }
 
 // }======================================================

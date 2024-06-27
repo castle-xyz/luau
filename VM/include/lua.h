@@ -343,6 +343,11 @@ LUA_API lua_Alloc lua_getallocf(lua_State* L, void** ud);
 #define LUA_NOREF -1
 #define LUA_REFNIL 0
 
+// jesse: for love compatibility
+// luabridge also defines these functions in LuaHelpers.h
+#define luaL_ref(L, i) lua_ref(L, i)
+#define luaL_unref(L, i, j) lua_unref(L, j)
+
 LUA_API int lua_ref(lua_State* L, int idx);
 LUA_API void lua_unref(lua_State* L, int ref);
 
@@ -376,8 +381,43 @@ LUA_API void lua_unref(lua_State* L, int ref);
 #define lua_isnoneornil(L, n) (lua_type(L, (n)) <= LUA_TNIL)
 
 #define lua_pushliteral(L, s) lua_pushlstring(L, "" s, (sizeof(s) / sizeof(char)) - 1)
-#define lua_pushcfunction(L, fn, debugname) lua_pushcclosurek(L, fn, debugname, 0, NULL)
-#define lua_pushcclosure(L, fn, debugname, nup) lua_pushcclosurek(L, fn, debugname, nup, NULL)
+
+// https://stackoverflow.com/a/11763277
+// get number of arguments with __NARG__
+#define __NARG__(...)  __NARG_I_(__VA_ARGS__,__RSEQ_N())
+#define __NARG_I_(...) __ARG_N(__VA_ARGS__)
+#define __ARG_N( \
+      _1, _2, _3, _4, _5, _6, _7, _8, _9,_10, \
+     _11,_12,_13,_14,_15,_16,_17,_18,_19,_20, \
+     _21,_22,_23,_24,_25,_26,_27,_28,_29,_30, \
+     _31,_32,_33,_34,_35,_36,_37,_38,_39,_40, \
+     _41,_42,_43,_44,_45,_46,_47,_48,_49,_50, \
+     _51,_52,_53,_54,_55,_56,_57,_58,_59,_60, \
+     _61,_62,_63,N,...) N
+#define __RSEQ_N() \
+     63,62,61,60,                   \
+     59,58,57,56,55,54,53,52,51,50, \
+     49,48,47,46,45,44,43,42,41,40, \
+     39,38,37,36,35,34,33,32,31,30, \
+     29,28,27,26,25,24,23,22,21,20, \
+     19,18,17,16,15,14,13,12,11,10, \
+     9,8,7,6,5,4,3,2,1,0
+
+// general definition for any function name
+#define _VFUNC_(name, n) name##n
+#define _VFUNC(name, n) _VFUNC_(name, n)
+#define VFUNC(func, ...) _VFUNC(func, __NARG__(__VA_ARGS__)) (__VA_ARGS__)
+
+// jesse: love expects lua_pushcfunction to only have two args
+#define lua_pushcfunction(...) VFUNC(lua_pushcfunction, __VA_ARGS__)
+#define lua_pushcfunction2(L, fn) lua_pushcclosurek(L, fn, "", 0, NULL)
+#define lua_pushcfunction3(L, fn, debugname) lua_pushcclosurek(L, fn, debugname, 0, NULL)
+
+// jesse: love expects lua_pushcclosure to only have two args
+#define lua_pushcclosure(...) VFUNC(lua_pushcclosure, __VA_ARGS__)
+#define lua_pushcclosure3(L, fn, nup) lua_pushcclosurek(L, fn, "", nup, NULL)
+#define lua_pushcclosure4(L, fn, debugname, nup) lua_pushcclosurek(L, fn, debugname, nup, NULL)
+
 #define lua_pushlightuserdata(L, p) lua_pushlightuserdatatagged(L, p, 0)
 
 #define lua_setglobal(L, s) lua_setfield(L, LUA_GLOBALSINDEX, (s))
