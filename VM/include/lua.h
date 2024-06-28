@@ -343,11 +343,6 @@ LUA_API lua_Alloc lua_getallocf(lua_State* L, void** ud);
 #define LUA_NOREF -1
 #define LUA_REFNIL 0
 
-// jesse: for love compatibility
-// luabridge also defines these functions in LuaHelpers.h
-#define luaL_ref(L, i) lua_ref(L, i)
-#define luaL_unref(L, i, j) lua_unref(L, j)
-
 LUA_API int lua_ref(lua_State* L, int idx);
 LUA_API void lua_unref(lua_State* L, int ref);
 
@@ -497,6 +492,22 @@ struct lua_Callbacks
 typedef struct lua_Callbacks lua_Callbacks;
 
 LUA_API lua_Callbacks* lua_callbacks(lua_State* L);
+
+// jesse: for love compatibility
+// luabridge also defines these functions in LuaHelpers.h
+inline int luaL_ref(lua_State* L, int idx)
+{
+    const int ref = lua_ref(L, -1);
+
+    lua_pop(L, 1);
+
+    return ref;
+}
+
+inline void luaL_unref(lua_State* L, int idx, int ref)
+{
+    lua_unref(L, ref);
+}
 
 /******************************************************************************
  * Copyright (c) 2019-2023 Roblox Corporation
