@@ -429,7 +429,8 @@ static const luaL_Reg base_funcs[] = {
     {"assert", luaB_assert},
     {"error", luaB_error},
     {"gcinfo", luaB_gcinfo},
-    {"getfenv", luaB_getfenv},
+    // jesse: this is potentially dangerous https://luau-lang.org/sandbox
+    //{"getfenv", luaB_getfenv},
     {"getmetatable", luaB_getmetatable},
     {"next", luaB_next},
     {"newproxy", luaB_newproxy},
@@ -439,7 +440,8 @@ static const luaL_Reg base_funcs[] = {
     {"rawset", luaB_rawset},
     {"rawlen", luaB_rawlen},
     {"select", luaB_select},
-    {"setfenv", luaB_setfenv},
+    // jesse: this is potentially dangerous https://luau-lang.org/sandbox
+    //{"setfenv", luaB_setfenv},
     {"setmetatable", luaB_setmetatable},
     {"tonumber", luaB_tonumber},
     {"tostring", luaB_tostring},
