@@ -40,6 +40,7 @@ int luaL_argerrorL(lua_State* L, int narg, const char* extramsg)
         luaL_error(L, "invalid argument #%d to '%s' (%s)", narg, fname, extramsg);
     else
         luaL_error(L, "invalid argument #%d (%s)", narg, extramsg);
+	return 0;
 }
 
 l_noret luaL_typeerrorL(lua_State* L, int narg, const char* tname)
@@ -104,6 +105,7 @@ int luaL_checkoption(lua_State* L, int narg, const char* def, const char* const 
             return i;
     const char* msg = lua_pushfstring(L, "invalid option '%s'", name);
     luaL_argerrorL(L, narg, msg);
+	return 0;
 }
 
 int luaL_newmetatable(lua_State* L, const char* tname)

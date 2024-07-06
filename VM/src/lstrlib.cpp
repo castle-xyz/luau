@@ -210,6 +210,7 @@ static int capture_to_close(MatchState* ms)
         if (ms->capture[level].len == CAP_UNFINISHED)
             return level;
     luaL_error(ms->L, "invalid pattern capture");
+	return 0;
 }
 
 static const char* classend(MatchState* ms, const char* p)
