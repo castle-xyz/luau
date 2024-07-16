@@ -241,6 +241,9 @@ LUA_API void* lua_getthreaddata(lua_State* L);
 LUA_API void lua_setthreaddata(lua_State* L, void* data);
 LUA_API int lua_costatus(lua_State* L, lua_State* co);
 
+
+LUA_API int castle_lua_set_timeout(lua_State* L, double timeout);
+
 /*
 ** garbage-collection function and options
 */

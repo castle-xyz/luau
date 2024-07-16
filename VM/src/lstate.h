@@ -242,6 +242,7 @@ struct lua_State
 
     bool isactive;   // thread is currently executing, stack may be mutated without barriers
     bool singlestep; // call debugstep hook after each instruction
+    double timeout = 0.0;
 
 
     StkId top;                                        // first free slot in the stack

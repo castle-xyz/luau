@@ -13,6 +13,7 @@
 #include "lbuiltins.h"
 #include "lnumutils.h"
 #include "lbytecode.h"
+#include "Luau/TimeTrace.h"
 
 #include <string.h>
 
@@ -206,6 +207,8 @@ static void luau_execute(lua_State* L)
     StkId base;
     TValue* k;
     const Instruction* pc;
+    short numInstructionsSinceTimeoutCheck = 0;
+    double initialTime = Luau::TimeTrace::getClock();
 
     LUAU_ASSERT(isLua(L->ci));
     LUAU_ASSERT(L->isactive);
@@ -243,6 +246,17 @@ reentry:
         // ... and singlestep logic :)
         if (SingleStep)
         {
+            numInstructionsSinceTimeoutCheck++;
+            if (numInstructionsSinceTimeoutCheck > 100 && L->timeout > 0.0) {
+              numInstructionsSinceTimeoutCheck = 0;
+              double newTime = Luau::TimeTrace::getClock();
+
+              if (newTime - initialTime > L->timeout) {
+                lua_yield(L, 0);
+                goto exit;
+              }
+            }
+
             if (L->global->cb.debugstep && !luau_skipstep(LUAU_INSN_OP(*pc)))
             {
                 VM_PROTECT(luau_callhook(L, L->global->cb.debugstep, NULL));
@@ -3152,7 +3166,7 @@ exit:;
 
 void luau_execute(lua_State* L)
 {
-    if (L->singlestep)
+    if (L->singlestep || L->timeout > 0.0)
         luau_execute<true>(L);
     else
         luau_execute<false>(L);

@@ -518,6 +518,12 @@ int lua_yield(lua_State* L, int nresults)
     return -1;
 }
 
+int castle_lua_set_timeout(lua_State* L, double timeout)
+{
+  L->timeout = timeout;
+  return 0;
+}
+
 int lua_break(lua_State* L)
 {
     if (L->nCcalls > L->baseCcalls)
