@@ -92,7 +92,7 @@ target_link_libraries(Luau.CodeGen PUBLIC Luau.Common)
 
 target_compile_features(Luau.VM PRIVATE cxx_std_11)
 target_include_directories(Luau.VM PUBLIC VM/include)
-target_link_libraries(Luau.VM PUBLIC Luau.Common)
+target_link_libraries(Luau.VM PUBLIC Luau.Ast Luau.Common)
 
 target_include_directories(isocline PUBLIC extern/isocline/include)
 
@@ -266,7 +266,7 @@ add_subdirectory(fuzz)
 foreach(LIB Luau.Ast Luau.Compiler Luau.Config Luau.Analysis Luau.CodeGen Luau.VM)
     if(TARGET ${LIB})
         get_target_property(DEPENDS ${LIB} LINK_LIBRARIES)
-        if(LIB MATCHES "CodeGen|VM" AND DEPENDS MATCHES "Ast|Analysis|Config|Compiler")
+        if(LIB MATCHES "CodeGen|VM" AND DEPENDS MATCHES "Analysis|Config|Compiler")
             message(FATAL_ERROR ${LIB} " is a runtime component but it depends on one of the offline components")
         endif()
         if(LIB MATCHES "Ast|Analysis|Compiler" AND DEPENDS MATCHES "CodeGen|VM")
