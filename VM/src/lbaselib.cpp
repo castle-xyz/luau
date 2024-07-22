@@ -441,7 +441,7 @@ static const luaL_Reg base_funcs[] = {
     {"rawlen", luaB_rawlen},
     {"select", luaB_select},
     // jesse: this is potentially dangerous https://luau-lang.org/sandbox
-    {"setfenv", luaB_setfenv},
+    //{"setfenv", luaB_setfenv},
     {"setmetatable", luaB_setmetatable},
     {"tonumber", luaB_tonumber},
     {"tostring", luaB_tostring},
