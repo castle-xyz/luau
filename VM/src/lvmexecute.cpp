@@ -252,7 +252,7 @@ reentry:
               double newTime = Luau::TimeTrace::getClock();
 
               if (newTime - initialTime > L->timeout) {
-                lua_yield(L, 0);
+                VM_PROTECT(lua_yield(L, 0));
                 goto exit;
               }
             }
