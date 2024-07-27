@@ -428,12 +428,12 @@ static int luaB_newproxy(lua_State* L)
 static const luaL_Reg base_funcs[] = {
     {"assert", luaB_assert},
     {"error", luaB_error},
-    {"gcinfo", luaB_gcinfo},
+    //{"gcinfo", luaB_gcinfo},
     // jesse: this is potentially dangerous https://luau-lang.org/sandbox
     //{"getfenv", luaB_getfenv},
     {"getmetatable", luaB_getmetatable},
     {"next", luaB_next},
-    {"newproxy", luaB_newproxy},
+    //{"newproxy", luaB_newproxy},
     {"print", luaB_print},
     {"rawequal", luaB_rawequal},
     {"rawget", luaB_rawget},

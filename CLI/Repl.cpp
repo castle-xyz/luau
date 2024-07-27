@@ -238,11 +238,11 @@ void setupState(lua_State* L)
     luaL_openlibs(L);
 
     static const luaL_Reg funcs[] = {
-        {"loadstring", lua_loadstring},
-        {"require", lua_require},
-        {"collectgarbage", lua_collectgarbage},
+        //{"loadstring", lua_loadstring},
+        //{"require", lua_require},
+        //{"collectgarbage", lua_collectgarbage},
 #ifdef CALLGRIND
-        {"callgrind", lua_callgrind},
+        //{"callgrind", lua_callgrind},
 #endif
         {NULL, NULL},
     };
