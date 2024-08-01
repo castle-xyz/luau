@@ -211,10 +211,10 @@ static int os_difftime(lua_State* L)
 }
 
 static const luaL_Reg syslib[] = {
-    {"clock", os_clock},
-    {"date", os_date},
-    {"difftime", os_difftime},
-    {"time", os_time},
+    //{"clock", os_clock},
+    //{"date", os_date},
+    //{"difftime", os_difftime},
+    //{"time", os_time},
     {NULL, NULL},
 };
 
