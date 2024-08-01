@@ -1648,9 +1648,9 @@ static const luaL_Reg strlib[] = {
     {"sub", str_sub},
     {"upper", str_upper},
     {"split", str_split},
-    {"pack", str_pack},
-    {"packsize", str_packsize},
-    {"unpack", str_unpack},
+    //{"pack", str_pack},
+    //{"packsize", str_packsize},
+    //{"unpack", str_unpack},
     {NULL, NULL},
 };
 
